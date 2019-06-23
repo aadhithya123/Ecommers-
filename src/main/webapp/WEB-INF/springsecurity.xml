@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+    xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                    http://www.springframework.org/schema/security
+                    http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+                      
+    <http auto-config="true">
+        <intercept-url pattern="/Home" access="hasRole('ROLE_ADMIN')" />
+<!--         <intercept-url pattern="/Product" access="hasRole('ROLE_ADMIN')" /> -->
+<!--         <intercept-url pattern="/product" access="hasRole('ROLE_ADMIN')" /> -->
+<!--         <intercept-url pattern="/catogory" access="hasRole('ROLE_ADMIN')" /> -->
+        <!-- <intercept-url pattern="/Supplier" access="hasRole('ROLE_ADMIN')"  -->
+ 		<intercept-url pattern="/UserHome" access="hasRole('ROLE_USER')"/>
+<!--  		<intercept-url pattern="/product" access="hasRole('ROLE_USER')"/> -->
+<!--  		<intercept-url pattern="/aboutus" access="hasRole('ROLE_USER')"/> -->
+        <!-- user-defined login form redirection -->
+        <form-login login-page="/Login" default-target-url="/login_success" authentication-failure-url="/error" />
+
+        <!-- csrf disabled -->
+        <csrf disabled="true" />
+    </http>
+    <!-- spring authentication configuration via database -->
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+                users-by-username-query="select username, password,enabled from USER where username = ?"
+                authorities-by-username-query="select u.username, ur.authority from USER u, USER_ROLL ur where u.userid = ur.userid and u.username = ?" />
+        </authentication-provider>
+    </authentication-manager>
+ 
+    <!-- database configuration (database = MySql) -->
+   
+</beans:beans>
